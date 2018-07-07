@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="web.demo.dao.RoleDao">
+	<resultMap type="RoleEntity" id="RoleResult">
+		<result property="id" column="id"/>
+		<result property="roleName" column="roleName"/>
+		<result property="description" column="description"/>
+		<collection property="resourcelist" ofType="web.demo.entity.ResourceEntity" column="id" select="findResourceByRoleId"/>
+	</resultMap>
+
+
+	<select id="queryByPage" parameterType="String" resultMap="RoleResult">
+		select id, roleName, description from t_role where roleName like CONCAT('%', #{name}, '%')
+	</select>
+
+	<select id="getByRoleName" parameterType="String" resultMap="RoleResult">
+		select id, roleName, description from t_role where roleName=#{roleName}
+	</select>
+
+	<select id="getByRoleId" parameterType="Integer" resultMap="RoleResult">
+		select id, roleName, description from t_role where id=#{id}
+	</select>
+
+	<select id="getAllRole" resultMap="RoleResult">
+		select id, roleName, description from t_role
+	</select>
+
+	<select id="findResourceByRoleId" resultType="web.demo.entity.ResourceEntity">
+		SELECT r.id, r.resourceName, r.href, r.order_no, r.parentid  FROM t_resource r
+		inner join t_role_resource rr on r.id = rr.resourceId
+		inner join t_role ro on ro.id = rr.roleId where ro.id = #{id}
+	</select>
+
+	<insert id="insertRole" useGeneratedKeys="true" keyProperty="id" parameterType="RoleEntity">
+		insert into t_role (roleName, description) values (#{roleName}, #{description});
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+
+		<foreach collection="resourcelist" item="res" separator=";">
+			insert into t_role_resource (roleId, resourceId)
+			values (LAST_INSERT_ID(), #{res.id})
+		</foreach>
+	</insert>
+
+	<delete id="deleteRole" parameterType="Integer">
+		<!-- 删除关联关系 -->
+		delete from t_role_resource WHERE roleId = #{id};
+		<!-- 删除角色 -->
+		delete from t_role WHERE id = #{id};
+	</delete>
+
+	<update id="updateRole" parameterType="RoleEntity">
+		<!-- 修改角色 -->
+		update t_role set roleName=#{roleName}, description=#{description} where id= #{id};
+		<!-- 删除原来的关联关系 -->
+		delete from t_role_resource WHERE roleId = #{id};
+		<!-- 添加新的关联关系 -->
+		<foreach collection="resourcelist" item="res" separator=";">
+			insert into t_role_resource (roleId, resourceId)
+			values (#{id}, #{res.id})
+		</foreach>
+	</update>
+
+</mapper> 

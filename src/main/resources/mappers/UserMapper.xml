@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="web.demo.dao.UserDao">
+
+	<resultMap type="UserEntity" id="UserResult">
+		<result property="id" column="id"/>
+		<result property="userName" column="userName"/>
+		<result property="password" column="password"/>
+		<result property="roleId" column="roleId"/>
+		<result property="roleName" column="roleName"/>
+	</resultMap>
+
+	<insert id="insertUser" useGeneratedKeys="true" keyProperty="id" parameterType="UserEntity">
+		insert into t_user(userName,password,roleId)
+		values(#{userName},#{password},#{roleId})
+	</insert>
+
+	<update id="updateUser" parameterType="UserEntity">
+		update t_user set userName=#{userName}, password=#{password}, roleId=#{roleId} where id= #{id}
+	</update >
+
+	<delete id="deleteUser" parameterType="Integer">
+		delete from t_user WHERE id = #{id}
+	</delete>
+
+	<select id="getByUserName" parameterType="String" resultMap="UserResult">
+		select * from t_user where userName=#{userName}
+	</select>
+
+	<select id="getByUserId" parameterType="Integer" resultMap="UserResult">
+		select * from t_user where id=#{id}
+	</select>
+
+	<select id="getRoles" parameterType="String" resultType="String">
+		select r.roleName from t_user u,t_role r where u.roleId=r.id and u.userName=#{userName}
+	</select>
+	
+	<select id="getPermissions" parameterType="String" resultType="String">
+		select re.href from t_user us, t_role ro, t_role_resource rr, t_resource re where
+		us.roleId=ro.id and
+		ro.id=rr.roleId and
+		rr.resourceId=re.id and
+		us.userName=#{userName}
+	</select>
+
+	<select id="queryByPage" parameterType="String" resultMap="UserResult">
+		select u.id, u.userName, u.password, u.roleId, r.roleName from t_user u,t_role r where u.roleId = r.id and u.userName like CONCAT('%', #{name}, '%')
+	</select>
+
+	<select id="getByRoleId" parameterType="Integer" resultMap="UserResult">
+		select * from t_user where roleId=#{roleId}
+	</select>
+
+</mapper> 

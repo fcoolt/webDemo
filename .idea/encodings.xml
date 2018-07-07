@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/controller/system/LoginController.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/controller/system/permission/RoleController.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/controller/system/permission/UserController.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/dao/ResourceDao.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/dao/RoleDao.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/dao/UserDao.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/realm/MyRealm.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/service/ResourceService.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/service/RoleService.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/main/java/web/demo/service/UserService.java" charset="GBK" />
+  </component>
+</project>
