@@ -49,7 +49,23 @@
 													</span> 
 												</label>
 
+												<label class="block clearfix">
+														<span id="randomCodeSpan" class="block">
+															<img id="randomCodeImg" src="number.jsp"  style="position:relative;top:12px;"/>&nbsp;&nbsp;
+															<a href="javascript:void(0);" onclick="refresh_randomCode()" style="position:relative;top:13px;">换一张</a>
+														</span>
+
+													<span class="block input-icon input-icon-right" style="position:relative;top:-20px;">
+															<input name = "randomCode" id="randomCode" type="text" class="width-45 pull-right form-control" placeholder="" />
+															<i class="ace-icon fa fa-random"></i>
+														</span>
+												</label>
+
+
+
 												<div class="space"></div>
+
+
 
 												<div class="clearfix">
 													<!-- <label class="inline"> 
@@ -58,7 +74,7 @@
 													<button type="reset" class="width-35 pull-left btn btn-sm btn-primary" onclick="onReset()">
 														<i class="ace-icon fa fa-refresh"></i> <span class="bigger-110">重置</span>
 													</button>
-													<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+													<button type="submit" class="width-35 pull-right btn btn-sm btn-primary " onclick="onLogin()">
 														<i class="ace-icon fa fa-key"></i> <span class="bigger-110">登录</span>
 													</button>
 												</div>
@@ -124,6 +140,14 @@
             document.getElementById("errmsg").innerHTML = "";
         }
 
+        function refresh_randomCode(){
+            var img = document.getElementById("randomCodeImg");
+            img.src = "number.jsp?rnd=" + Math.random();
+		}
+
+		function onLogin() {
+            document.getElementById("errmsg").innerHTML = "<h5 class=\"blue\">登录中...</h5>";
+        }
 		jQuery(function($) {
 			$("form").submit(function () {
                 var username = $("input[name='userName']").val();

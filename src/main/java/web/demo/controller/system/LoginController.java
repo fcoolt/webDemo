@@ -49,10 +49,21 @@ public class LoginController {
 		UsernamePasswordToken token=new UsernamePasswordToken(user.getUserName(), user.getPassword());
 		try{
 			subject.login(token);
+
 			Session session=subject.getSession();
 			System.out.println("sessionId:"+session.getId());
 			System.out.println("sessionHost:"+session.getHost());
 			System.out.println("sessionTimeout:"+session.getTimeout());
+			System.out.println("numrand:"+session.getAttribute("numrand"));
+			String numrand = session.getAttribute("numrand").toString();
+			String randomCode = request.getParameter("randomCode");
+			if(!numrand.equals(randomCode)){
+				request.setAttribute("user", user);
+				String msg = "验证码错误！";
+				request.setAttribute("errorMsg", msg);
+				System.out.println(msg);
+				return "login";
+			}
 			//session.setAttribute("info", "session的数据");
 			return "redirect:/function/dataAnalysis.do";
 		}catch(Exception e){
